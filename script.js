@@ -60,9 +60,16 @@ class SpirographDesigner {
             }
         });
 
-        // Desktop mode button (mobile only)
+        // Desktop mode button (mobile only) - with debugging
+        console.log('Desktop mode button found:', this.elements.desktopModeBtn);
         if (this.elements.desktopModeBtn) {
-            this.elements.desktopModeBtn.addEventListener('click', () => this.switchToDesktopMode());
+            console.log('Adding event listener to desktop mode button');
+            this.elements.desktopModeBtn.addEventListener('click', () => {
+                console.log('Desktop mode button clicked!');
+                this.switchToDesktopMode();
+            });
+        } else {
+            console.log('Desktop mode button not found!');
         }
 
         // Generate button
@@ -133,33 +140,44 @@ class SpirographDesigner {
     }
 
     switchToDesktopMode() {
+        console.log('switchToDesktopMode called');
+        
         // Show desktop layout elements directly
         const mobileElements = document.querySelectorAll('.main-section .controls-section .mobile-only');
         const desktopElements = document.querySelectorAll('.main-section .controls-section .desktop-only');
         
+        console.log('Mobile elements found:', mobileElements.length);
+        console.log('Desktop elements found:', desktopElements.length);
+        
         // Hide mobile elements
-        mobileElements.forEach(el => {
+        mobileElements.forEach((el, index) => {
+            console.log(`Hiding mobile element ${index}:`, el);
             el.style.display = 'none';
         });
         
         // Show desktop elements
-        desktopElements.forEach(el => {
+        desktopElements.forEach((el, index) => {
+            console.log(`Showing desktop element ${index}:`, el);
             el.style.display = 'block';
         });
         
         // Also show desktop layout in drawer
         const drawerMobileElements = document.querySelectorAll('.drawer .mobile-only');
-        drawerMobileElements.forEach(el => {
+        console.log('Drawer mobile elements found:', drawerMobileElements.length);
+        drawerMobileElements.forEach((el, index) => {
+            console.log(`Hiding drawer mobile element ${index}:`, el);
             el.style.display = 'none';
         });
         
-        // Hide the desktop mode button after switching
+        // Hide desktop mode button after switching
         if (this.elements.desktopModeBtn) {
+            console.log('Hiding desktop mode button');
             this.elements.desktopModeBtn.style.display = 'none';
         }
         
         // Store that we're in desktop mode
         this.isDesktopMode = true;
+        console.log('Desktop mode activated');
     }
 
     openFullscreen() {
