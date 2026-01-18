@@ -133,20 +133,24 @@ class SpirographDesigner {
     }
 
     switchToDesktopMode() {
-        // Remove mobile-only classes and show desktop layout
-        document.querySelectorAll('.mobile-only').forEach(el => {
-            el.classList.remove('mobile-only');
-            el.classList.add('desktop-only');
-        });
+        // Force desktop layout by overriding CSS media queries
+        const style = document.createElement('style');
+        style.textContent = `
+            @media (max-width: 768px) {
+                .mobile-only { display: none !important; }
+                .desktop-only { display: block !important; }
+            }
+        `;
+        style.id = 'desktop-mode-override';
         
-        document.querySelectorAll('.desktop-only').forEach(el => {
-            el.classList.remove('desktop-only');
-            el.classList.add('mobile-only');
-        });
+        // Remove any existing override
+        const existingStyle = document.getElementById('desktop-mode-override');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
         
-        // Show desktop layout elements
-        document.querySelector('.main-section .controls-section .desktop-only').style.display = 'block';
-        document.querySelector('.main-section .controls-section .mobile-only').style.display = 'none';
+        // Add the new override
+        document.head.appendChild(style);
         
         // Hide the desktop mode button after switching
         if (this.elements.desktopModeBtn) {
