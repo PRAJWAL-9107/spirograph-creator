@@ -35,8 +35,7 @@ class SpirographDesigner {
             canvasContainer: document.getElementById('canvasContainer'),
             fullscreenModal: document.getElementById('fullscreenModal'),
             closeFullscreen: document.getElementById('closeFullscreen'),
-            fullscreenCanvas: document.getElementById('fullscreenCanvas'),
-            desktopModeBtn: document.getElementById('desktopModeBtn')
+            fullscreenCanvas: document.getElementById('fullscreenCanvas')
         };
 
         this.presets = {
@@ -59,18 +58,6 @@ class SpirographDesigner {
                 this.closeFullscreen();
             }
         });
-
-        // Desktop mode button (mobile only) - with debugging
-        console.log('Desktop mode button found:', this.elements.desktopModeBtn);
-        if (this.elements.desktopModeBtn) {
-            console.log('Adding event listener to desktop mode button');
-            this.elements.desktopModeBtn.addEventListener('click', () => {
-                console.log('Desktop mode button clicked!');
-                this.switchToDesktopMode();
-            });
-        } else {
-            console.log('Desktop mode button not found!');
-        }
 
         // Generate button
         this.buttons.generate.addEventListener('click', () => this.generateSpirograph());
@@ -390,52 +377,3 @@ class SpirographDesigner {
 document.addEventListener('DOMContentLoaded', () => {
     new SpirographDesigner();
 });
-
-// Add some utility functions for advanced features
-const SpirographUtils = {
-    // Calculate interesting parameter combinations
-    getInterestingParameters() {
-        return [
-            { outerRadius: 100, innerRadius: 33, distance: 65 }, // Creates 3-petal flower
-            { outerRadius: 100, innerRadius: 25, distance: 75 }, // Creates 4-petal flower
-            { outerRadius: 100, innerRadius: 20, distance: 80 }, // Creates 5-petal flower
-            { outerRadius: 120, innerRadius: 40, distance: 90 }, // Creates star pattern
-            { outerRadius: 100, innerRadius: 90, distance: 100 }, // Creates spiral
-        ];
-    },
-
-    // Validate parameters
-    validateParameters(R, r, d) {
-        if (r >= R) {
-            return { valid: false, message: "Inner radius must be smaller than outer radius" };
-        }
-        if (d < 0) {
-            return { valid: false, message: "Distance must be positive" };
-        }
-        return { valid: true };
-    },
-
-    // Calculate pattern information
-    getPatternInfo(R, r, d) {
-        const gcd = this.getGCD(R, r);
-        const petals = R / gcd;
-        const isHypotrochoid = r > R / 2;
-        
-        return {
-            petals: petals,
-            type: isHypotrochoid ? 'Hypotrochoid' : 'Epitrochoid',
-            symmetry: petals
-        };
-    },
-
-    getGCD(a, b) {
-        a = Math.abs(a);
-        b = Math.abs(b);
-        while (b) {
-            const temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-};
