@@ -508,6 +508,14 @@ header p {
         display: block;
     }
     
+    .mobile-only {
+        display: block !important;
+    }
+    
+    .desktop-only {
+        display: none !important;
+    }
+    
     .controls-section {
         padding: 20px;
     }
@@ -578,6 +586,17 @@ header p {
     #spirographCanvas {
         width: 100%;
         height: auto;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 769px) {
+    .mobile-only {
+        display: none !important;
+    }
+    
+    .desktop-only {
+        display: block !important;
     }
 }
 
