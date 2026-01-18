@@ -35,7 +35,8 @@ class SpirographDesigner {
             canvasContainer: document.getElementById('canvasContainer'),
             fullscreenModal: document.getElementById('fullscreenModal'),
             closeFullscreen: document.getElementById('closeFullscreen'),
-            fullscreenCanvas: document.getElementById('fullscreenCanvas')
+            fullscreenCanvas: document.getElementById('fullscreenCanvas'),
+            desktopModeBtn: document.getElementById('desktopModeBtn')
         };
 
         this.presets = {
@@ -58,6 +59,11 @@ class SpirographDesigner {
                 this.closeFullscreen();
             }
         });
+
+        // Desktop mode button (mobile only)
+        if (this.elements.desktopModeBtn) {
+            this.elements.desktopModeBtn.addEventListener('click', () => this.switchToDesktopMode());
+        }
 
         // Generate button
         this.buttons.generate.addEventListener('click', () => this.generateSpirograph());
@@ -123,6 +129,28 @@ class SpirographDesigner {
             gradientControls.style.display = 'block';
         } else {
             gradientControls.style.display = 'none';
+        }
+    }
+
+    switchToDesktopMode() {
+        // Remove mobile-only classes and show desktop layout
+        document.querySelectorAll('.mobile-only').forEach(el => {
+            el.classList.remove('mobile-only');
+            el.classList.add('desktop-only');
+        });
+        
+        document.querySelectorAll('.desktop-only').forEach(el => {
+            el.classList.remove('desktop-only');
+            el.classList.add('mobile-only');
+        });
+        
+        // Show desktop layout elements
+        document.querySelector('.main-section .controls-section .desktop-only').style.display = 'block';
+        document.querySelector('.main-section .controls-section .mobile-only').style.display = 'none';
+        
+        // Hide the desktop mode button after switching
+        if (this.elements.desktopModeBtn) {
+            this.elements.desktopModeBtn.style.display = 'none';
         }
     }
 
