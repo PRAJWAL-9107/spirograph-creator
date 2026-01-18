@@ -133,29 +133,33 @@ class SpirographDesigner {
     }
 
     switchToDesktopMode() {
-        // Force desktop layout by overriding CSS media queries
-        const style = document.createElement('style');
-        style.textContent = `
-            @media (max-width: 768px) {
-                .mobile-only { display: none !important; }
-                .desktop-only { display: block !important; }
-            }
-        `;
-        style.id = 'desktop-mode-override';
+        // Show desktop layout elements directly
+        const mobileElements = document.querySelectorAll('.main-section .controls-section .mobile-only');
+        const desktopElements = document.querySelectorAll('.main-section .controls-section .desktop-only');
         
-        // Remove any existing override
-        const existingStyle = document.getElementById('desktop-mode-override');
-        if (existingStyle) {
-            existingStyle.remove();
-        }
+        // Hide mobile elements
+        mobileElements.forEach(el => {
+            el.style.display = 'none';
+        });
         
-        // Add the new override
-        document.head.appendChild(style);
+        // Show desktop elements
+        desktopElements.forEach(el => {
+            el.style.display = 'block';
+        });
+        
+        // Also show desktop layout in drawer
+        const drawerMobileElements = document.querySelectorAll('.drawer .mobile-only');
+        drawerMobileElements.forEach(el => {
+            el.style.display = 'none';
+        });
         
         // Hide the desktop mode button after switching
         if (this.elements.desktopModeBtn) {
             this.elements.desktopModeBtn.style.display = 'none';
         }
+        
+        // Store that we're in desktop mode
+        this.isDesktopMode = true;
     }
 
     openFullscreen() {
